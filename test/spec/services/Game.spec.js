@@ -5,8 +5,29 @@ describe('Service: Game', function () {
   // load the service's module
   beforeEach(function () {
     module('minesweeperAppInternal');
+  });
 
-    //add your mocks here
+  //add your mocks here
+  var randGeneratorMock, randNumbersArrayMock;
+
+  beforeEach(function () {
+    randNumbersArrayMock = [];
+    randGeneratorMock = {
+      generateRand: (function () {
+        var currIndex = 0;
+        return function () {
+          if (currIndex < randNumbersArrayMock.length) {
+            return randNumbersArrayMock[currIndex++];
+          } else {
+            throw 'the indexes array is too short!';
+
+          }
+        };
+      })()
+    };
+    module({
+      randGenerator: randGeneratorMock
+    });
   });
 
   // instantiate service
@@ -33,9 +54,22 @@ describe('Service: Game', function () {
     expect(game.board[0].length).toBe(2);
   });
 
+  it('should create a unique array of mine indexes of size minesCount', function () {
+    var game = new Game(4, 2, 3);
+    randNumbersArrayMock = [1, 1, 2, 3, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10, 11];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    expect(minesIndexes.length).toBe(game.minesCount);
+    var uniqueMinesIndexes = minesIndexes.filter(function (item, i, arr) {
+      return arr.indexOf(item) === arr.lastIndexOf(item);
+    });
+    expect(uniqueMinesIndexes.length).toBe(game.minesCount);
+  });
+
   it('should plant n mines in the game\'s board', function () {
     var game = new Game(4, 2, 3);
-    game = Game.plantMines.call(game, game.minesCount);
+    randNumbersArrayMock = [0, 0, 2, 2, 7, 5, 3];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    game = game.plantMines(minesIndexes);
     expect(game.numOfMines()).toBe(3);
   });
 });

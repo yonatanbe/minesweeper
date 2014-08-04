@@ -3,7 +3,7 @@
 (function () {
 
   /* @ngInject */
-  function GameFactory() {
+  function GameFactory(randGenerator) {
     function Game(rows, cols, minesCount) {
       this.rows = rows;
       this.cols = cols;
@@ -19,25 +19,45 @@
       for (var i = 0; i < rows; i++) {
         board.push([]);
         for (var j = 0; j < cols; j++) {
-          board[i].push(0);
+          board[i].push({isMine: 0});
         }
       }
       return board;
     }
 
-    Game.prototype.numOfMines = function () {
-      return 3;
+    Game.prototype.getRandMineIndexes = function (size) {
+      var randArray = [],
+          currRand,
+          maxRandNumber = this.rows * this.cols;
+      while (randArray.length < size) {
+        currRand = randGenerator.generateRand(maxRandNumber);
+        if (randArray.indexOf(currRand) === -1) {
+          randArray.push(currRand);
+        }
+      }
+      return randArray;
     };
 
-//    var meaningOfLife = 42;
-
-    // Public API here
-    Game.plantMines = function (minesCount) {
-      for (var i = 0; i < minesCount; i++) {
-        i = i;
-      }
+    Game.prototype.plantMines = function (minesIndexesArray) {
+      var currRow, currCol;
+      var that = this;
+      minesIndexesArray.forEach(function (index) {
+        currRow = Math.floor(index / that.cols);
+        currCol = index % that.cols;
+        that.board[currRow][currCol].isMine = 1;
+      });
       return this;
     };
+
+    Game.prototype.numOfMines = function () {
+      return this.board.reduce(function (sum, currCol) {
+        return sum + currCol.reduce(function (colSum, currCell) {
+          return colSum + currCell.isMine;
+        }, 0)
+      }, 0);
+    };
+
+    // Public API here
 
     return Game;
   }
