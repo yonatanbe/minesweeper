@@ -4,16 +4,39 @@
 
   /* @ngInject */
   function GameFactory() {
-    var Game = {};
+    function Game(rows, cols, minesCount) {
+      this.rows = rows;
+      this.cols = cols;
+      this.minesCount = minesCount;
+      this.board = createEmptyBoard(rows, cols);
+    }
 
     // Service logic
     // ...
 
-    var meaningOfLife = 42;
+    function createEmptyBoard(rows, cols) {
+      var board = [];
+      for (var i = 0; i < rows; i++) {
+        board.push([]);
+        for (var j = 0; j < cols; j++) {
+          board[i].push(0);
+        }
+      }
+      return board;
+    }
+
+    Game.prototype.numOfMines = function () {
+      return 3;
+    };
+
+//    var meaningOfLife = 42;
 
     // Public API here
-    Game.someMethod = function () {
-      return meaningOfLife;
+    Game.plantMines = function (minesCount) {
+      for (var i = 0; i < minesCount; i++) {
+        i = i;
+      }
+      return this;
     };
 
     return Game;
