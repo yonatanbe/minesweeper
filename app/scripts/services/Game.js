@@ -19,7 +19,7 @@
       for (var i = 0; i < rows; i++) {
         board.push([]);
         for (var j = 0; j < cols; j++) {
-          board[i].push({isMine: 0});
+          board[i].push({isMine: 0, minesNeighborsCount: -1});
         }
       }
       return board;
@@ -53,9 +53,32 @@
       return this.board.reduce(function (sum, currCol) {
         return sum + currCol.reduce(function (colSum, currCell) {
           return colSum + currCell.isMine;
-        }, 0)
+        }, 0);
       }, 0);
     };
+
+    Game.prototype.getMinesNeighborsCount = function (cellRow, cellCol) {
+      return this.board[cellRow][cellCol].minesNeighborsCount !== -1 ?
+        this.board[cellRow][cellCol].minesNeighborsCount : calcMinesNeighbor.apply(this, [cellRow, cellCol]);
+    };
+
+    function calcMinesNeighbor(cellRow, cellCol) {
+      if (!this.board[cellRow][cellCol].isMine) {
+        this.board[cellRow][cellCol].minesNeighborsCount = 0;
+        var rowStart = Math.max(cellRow - 1, 0);
+        var rowFinish = Math.min(cellRow + 1, this.rows - 1);
+        var colStart = Math.max(cellCol - 1, 0);
+        var colFinish = Math.min(cellCol + 1, this.cols - 1);
+        for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
+          for (var currCol = colStart; currCol <= colFinish; currCol++) {
+            if (this.board[currRow][currCol].isMine) {
+              this.board[cellRow][cellCol].minesNeighborsCount++;
+            }
+          }
+        }
+      }
+      return this.board[cellRow][cellCol].minesNeighborsCount;
+    }
 
     // Public API here
 

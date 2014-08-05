@@ -72,4 +72,21 @@ describe('Service: Game', function () {
     game = game.plantMines(minesIndexes);
     expect(game.numOfMines()).toBe(3);
   });
+
+  it('should calculate the number of mine neighbors for every cell in the game\'s board on demand', function () {
+    var game = new Game(4, 4, 5);
+    randNumbersArrayMock = [0, 3, 5, 6, 9];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    game = game.plantMines(minesIndexes);
+    expect(game.getMinesNeighborsCount(0, 0)).toBe(-1);
+    expect(game.getMinesNeighborsCount(0, 1)).toBe(3);
+    expect(game.getMinesNeighborsCount(0, 2)).toBe(3);
+    expect(game.getMinesNeighborsCount(0, 3)).toBe(-1);
+    expect(game.getMinesNeighborsCount(1, 0)).toBe(3);
+    expect(game.getMinesNeighborsCount(1, 1)).toBe(-1);
+    expect(game.getMinesNeighborsCount(1, 3)).toBe(2);
+    expect(game.getMinesNeighborsCount(2, 2)).toBe(3);
+    expect(game.getMinesNeighborsCount(3, 3)).toBe(0);
+    expect(game.getMinesNeighborsCount(3, 0)).toBe(1);
+  });
 });
