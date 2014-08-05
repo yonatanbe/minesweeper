@@ -119,4 +119,35 @@ describe('Service: Game', function () {
     expect(numberOfCellsRevealed).toBe(4);
     expect(game.board[2][3].isRevealed()).toBeTruthy();
   });
+
+  it('should reveal all the neighbors of a revealed cell that has 0 mine neighbors and return the total amount of revealed cells for a big board', function () {
+    var game = new Game(7, 7, 3);
+    randNumbersArrayMock = [9, 18, 33];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    game = game.plantMines(minesIndexes);
+    var numberOfCellsRevealed = game.reveal(5, 1);
+    expect(numberOfCellsRevealed).toBe(32);
+  });
+
+  it('should NOT reveal flagged cells', function () {
+    var game = new Game(7, 7, 3);
+    randNumbersArrayMock = [9, 18, 33];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    game = game.plantMines(minesIndexes);
+    game.board[0][0].toggleFlag();
+    game.board[5][3].toggleFlag();
+    var numberOfCellsRevealed = game.reveal(5, 1);
+    expect(numberOfCellsRevealed).toBe(30);
+  });
+
+  it('should NOT reveal flagged cells and not "cross" flags wall', function () {
+    var game = new Game(7, 7, 3);
+    randNumbersArrayMock = [9, 18, 33];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    game = game.plantMines(minesIndexes);
+    game.board[5][5].toggleFlag();
+    game.board[6][5].toggleFlag();
+    var numberOfCellsRevealed = game.reveal(5, 1);
+    expect(numberOfCellsRevealed).toBe(28);
+  });
 });

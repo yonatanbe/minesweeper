@@ -74,6 +74,7 @@
         });
       }
       return cell.minesNeighborsCount;
+    }
 //        var rowStart = Math.max(cellRow - 1, 0);
 //        var rowFinish = Math.min(cellRow + 1, game.rows - 1);
 //        var colStart = Math.max(cellCol - 1, 0);
@@ -85,12 +86,11 @@
 //            }
 //          }
 //        }
-    }
 
     Game.prototype.reveal = function (row, col) {
       var cell = this.board[row][col];
       var totalCellsRevealed = 0;
-      if (!cell.isRevealed()) {
+      if (!cell.isFlagged() && !cell.isRevealed()) {
         cell.reveal();
         var minesNeighborsCount = this.getMinesNeighborsCount(row, col);
         totalCellsRevealed += (minesNeighborsCount !== 0) ?
@@ -102,10 +102,10 @@
     function revealNeighbors(game, cellRow, cellCol) {
       var numberOfCellsRevealed;
       numberOfCellsRevealed = mapEachNeighbor(game, cellRow, cellCol, function (game, row, col) {
-        return !game.board[row][col].isRevealed() ?
-          game.reveal(row, col) : 0;
+        return game.reveal(row, col);
       });
       return numberOfCellsRevealed;
+    }
 //      var rowStart = Math.max(cellRow - 1, 0);
 //      var rowFinish = Math.min(cellRow + 1, game.rows - 1);
 //      var colStart = Math.max(cellCol - 1, 0);
@@ -117,7 +117,6 @@
 //          }
 //        }
 //      }
-    }
 
     function mapEachNeighbor(game, cellRow, cellCol, func) {
       var sum = 0;
@@ -125,6 +124,7 @@
       var rowFinish = Math.min(cellRow + 1, game.rows - 1);
       var colStart = Math.max(cellCol - 1, 0);
       var colFinish = Math.min(cellCol + 1, game.cols - 1);
+
       for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
         for (var currCol = colStart; currCol <= colFinish; currCol++) {
           sum += func(game, currRow, currCol);
