@@ -26,6 +26,7 @@ describe('Service: Cell', function () {
     expect(cell.isMine).toBe(0);
     expect(cell.minesNeighborsCount).toBe(-1);
     expect(cell.flag).toBe(false);
+    expect(cell.revealed).toBe(false);
   });
 
   it('should initialize a cell not to be a mine', function () {
@@ -43,5 +44,10 @@ describe('Service: Cell', function () {
     expect(cell.isFlagged()).toBeTruthy();
     cell.toggleFlag();
     expect(cell.isFlagged()).toBeFalsy();
+  });
+
+  it('should be able to set the revealed flag of the cell to true', function () {
+    cell.reveal();
+    expect(cell.isRevealed()).toBeTruthy();
   });
 });

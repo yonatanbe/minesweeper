@@ -8,6 +8,7 @@
       this.isMine = 0;
       this.minesNeighborsCount = -1;
       this.flag = false;
+      this.revealed = false;
     }
 
     // Service logic
@@ -28,6 +29,14 @@
 
     Cell.prototype.toggleFlag = function () {
       this.flag = !this.flag;
+    };
+
+    Cell.prototype.reveal = function () {
+      this.revealed = true;
+    };
+
+    Cell.prototype.isRevealed = function () {
+      return this.revealed;
     };
 
     return Cell;

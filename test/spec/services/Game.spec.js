@@ -95,6 +95,28 @@ describe('Service: Game', function () {
     randNumbersArrayMock = [0, 3, 5, 6, 9];
     var minesIndexes = game.getRandMineIndexes(game.minesCount);
     game = game.plantMines(minesIndexes);
-    expect(game.reveal(0, 1)).toBe(1);
+    var numberOfCellsRevealed = game.reveal(0, 1);
+    expect(numberOfCellsRevealed).toBe(1);
+    expect(game.board[0][1].isRevealed()).toBeTruthy();
+  });
+
+  it('should return 0 cells revealed when revealing an already revealed cell', function () {
+    var game = new Game(4, 4, 5);
+    randNumbersArrayMock = [0, 3, 5, 6, 9];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    game = game.plantMines(minesIndexes);
+    game.reveal(0, 1);
+    var numberOfCellsRevealed = game.reveal(0, 1);
+    expect(numberOfCellsRevealed).toBe(0);
+  });
+
+  it('should reveal all the neighbors of a revealed cell that has 0 mine neighbors and return the total amount of revealed cells', function () {
+    var game = new Game(4, 4, 5);
+    randNumbersArrayMock = [0, 3, 5, 6, 9];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    game = game.plantMines(minesIndexes);
+    var numberOfCellsRevealed = game.reveal(3, 3);
+    expect(numberOfCellsRevealed).toBe(4);
+    expect(game.board[2][3].isRevealed()).toBeTruthy();
   });
 });

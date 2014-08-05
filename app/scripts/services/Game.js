@@ -67,24 +67,71 @@
       var cell = game.board[cellRow][cellCol];
       if (!cell.isAMine()) {
         cell.minesNeighborsCount = 0;
-        var rowStart = Math.max(cellRow - 1, 0);
-        var rowFinish = Math.min(cellRow + 1, game.rows - 1);
-        var colStart = Math.max(cellCol - 1, 0);
-        var colFinish = Math.min(cellCol + 1, game.cols - 1);
-        for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
-          for (var currCol = colStart; currCol <= colFinish; currCol++) {
-            if (game.board[currRow][currCol].isAMine()) {
-              cell.minesNeighborsCount++;
-            }
+        mapEachNeighbor(game, cellRow, cellCol, function (game, row, col) {
+          if (game.board[row][col].isAMine()) {
+            cell.minesNeighborsCount++;
           }
-        }
+        });
       }
       return cell.minesNeighborsCount;
+//        var rowStart = Math.max(cellRow - 1, 0);
+//        var rowFinish = Math.min(cellRow + 1, game.rows - 1);
+//        var colStart = Math.max(cellCol - 1, 0);
+//        var colFinish = Math.min(cellCol + 1, game.cols - 1);
+//        for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
+//          for (var currCol = colStart; currCol <= colFinish; currCol++) {
+//            if (game.board[currRow][currCol].isAMine()) {
+//              cell.minesNeighborsCount++;
+//            }
+//          }
+//        }
     }
 
     Game.prototype.reveal = function (row, col) {
-      return 1;
+      var cell = this.board[row][col];
+      var totalCellsRevealed = 0;
+      if (!cell.isRevealed()) {
+        cell.reveal();
+        var minesNeighborsCount = this.getMinesNeighborsCount(row, col);
+        totalCellsRevealed += (minesNeighborsCount !== 0) ?
+          1 : 1 + revealNeighbors(this, row, col);
+      }
+      return totalCellsRevealed;
     };
+
+    function revealNeighbors(game, cellRow, cellCol) {
+      var numberOfCellsRevealed;
+      numberOfCellsRevealed = mapEachNeighbor(game, cellRow, cellCol, function (game, row, col) {
+        return !game.board[row][col].isRevealed() ?
+          game.reveal(row, col) : 0;
+      });
+      return numberOfCellsRevealed;
+//      var rowStart = Math.max(cellRow - 1, 0);
+//      var rowFinish = Math.min(cellRow + 1, game.rows - 1);
+//      var colStart = Math.max(cellCol - 1, 0);
+//      var colFinish = Math.min(cellCol + 1, game.cols - 1);
+//      for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
+//        for (var currCol = colStart; currCol <= colFinish; currCol++) {
+//          if (!game.board[currRow][currCol].isRevealed()) {
+//            numberOfCellsRevealed += game.reveal(currRow, currCol);
+//          }
+//        }
+//      }
+    }
+
+    function mapEachNeighbor(game, cellRow, cellCol, func) {
+      var sum = 0;
+      var rowStart = Math.max(cellRow - 1, 0);
+      var rowFinish = Math.min(cellRow + 1, game.rows - 1);
+      var colStart = Math.max(cellCol - 1, 0);
+      var colFinish = Math.min(cellCol + 1, game.cols - 1);
+      for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
+        for (var currCol = colStart; currCol <= colFinish; currCol++) {
+          sum += func(game, currRow, currCol);
+        }
+      }
+      return sum;
+    }
 
     // Public API here
 
