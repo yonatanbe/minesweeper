@@ -3,7 +3,7 @@
 (function () {
 
   /* @ngInject */
-  function GameFactory(randGenerator) {
+  function GameFactory(randGenerator, Cell) {
     function Game(rows, cols, minesCount) {
       this.rows = rows;
       this.cols = cols;
@@ -19,7 +19,7 @@
       for (var i = 0; i < rows; i++) {
         board.push([]);
         for (var j = 0; j < cols; j++) {
-          board[i].push({isMine: 0, minesNeighborsCount: -1});
+          board[i].push(new Cell());
         }
       }
       return board;
@@ -58,27 +58,33 @@
     };
 
     Game.prototype.getMinesNeighborsCount = function (cellRow, cellCol) {
-      return this.board[cellRow][cellCol].minesNeighborsCount !== -1 ?
-        this.board[cellRow][cellCol].minesNeighborsCount : calcMinesNeighbor.apply(this, [cellRow, cellCol]);
+      var cell = this.board[cellRow][cellCol];
+      return (cell.isAMine() || cell.minesNeighborsCount !== -1) ?
+        cell.minesNeighborsCount : calcMinesNeighbor(this, cellRow, cellCol);
     };
 
-    function calcMinesNeighbor(cellRow, cellCol) {
-      if (!this.board[cellRow][cellCol].isMine) {
-        this.board[cellRow][cellCol].minesNeighborsCount = 0;
+    function calcMinesNeighbor(game, cellRow, cellCol) {
+      var cell = game.board[cellRow][cellCol];
+      if (!cell.isAMine()) {
+        cell.minesNeighborsCount = 0;
         var rowStart = Math.max(cellRow - 1, 0);
-        var rowFinish = Math.min(cellRow + 1, this.rows - 1);
+        var rowFinish = Math.min(cellRow + 1, game.rows - 1);
         var colStart = Math.max(cellCol - 1, 0);
-        var colFinish = Math.min(cellCol + 1, this.cols - 1);
+        var colFinish = Math.min(cellCol + 1, game.cols - 1);
         for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
           for (var currCol = colStart; currCol <= colFinish; currCol++) {
-            if (this.board[currRow][currCol].isMine) {
-              this.board[cellRow][cellCol].minesNeighborsCount++;
+            if (game.board[currRow][currCol].isAMine()) {
+              cell.minesNeighborsCount++;
             }
           }
         }
       }
-      return this.board[cellRow][cellCol].minesNeighborsCount;
+      return cell.minesNeighborsCount;
     }
+
+    Game.prototype.reveal = function (row, col) {
+      return 1;
+    };
 
     // Public API here
 

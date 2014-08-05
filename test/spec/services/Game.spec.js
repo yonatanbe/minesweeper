@@ -89,4 +89,12 @@ describe('Service: Game', function () {
     expect(game.getMinesNeighborsCount(3, 3)).toBe(0);
     expect(game.getMinesNeighborsCount(3, 0)).toBe(1);
   });
+
+  it('should be able to reveal a cell on the board and get back the number of cells that were revealed', function () {
+    var game = new Game(4, 4, 5);
+    randNumbersArrayMock = [0, 3, 5, 6, 9];
+    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    game = game.plantMines(minesIndexes);
+    expect(game.reveal(0, 1)).toBe(1);
+  });
 });

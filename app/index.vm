@@ -80,6 +80,7 @@
     <script src="scripts/controllers/main.js"></script>
     <script src="scripts/services/Game.js"></script>
     <script src="scripts/services/randGenerator.js"></script>
+    <script src="scripts/services/Cell.js"></script>
     <!-- endbuild --><!-- scripts -->
     <!-- end-process-tags -->
 
