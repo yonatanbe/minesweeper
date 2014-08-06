@@ -26,3 +26,13 @@ $font-helvetica75: "HelveticaNeueW01-75Bold", "HelveticaNeueW02-75Bold", "Helvet
   line-height: 1;
   letter-spacing: -1px;
 }
+
+button {
+  width: 30px;
+  height: 30px;
+  margin: 2px;
+}
+
+button.flagged {
+  background-color: red;
+}

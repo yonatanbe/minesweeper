@@ -1,0 +1,5 @@
+<div ng-repeat="row in gameCtrl.game.board">
+    <button ng-repeat="cell in row" ng-click = "gameCtrl.game.reveal($parent.$index, $index)" ng-disabled = "gameCtrl.game.board[$parent.$index][$index].isRevealed()" right-click="gameCtrl.game.board[$parent.$index][$index].toggleFlag()" ng-class="{flagged: gameCtrl.game.board[$parent.$index][$index].isFlagged()}">
+        <div ng-show="cell.isRevealed() && cell.minesNeighborsCount !== 0">{{cell.minesNeighborsCount}}</div>
+    </button>
+</div>

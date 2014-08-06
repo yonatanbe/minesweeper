@@ -11,9 +11,6 @@
       this.revealed = false;
     }
 
-    // Service logic
-    // ...
-
     // Public API here
     Cell.prototype.isAMine = function () {
       return this.isMine === 1;

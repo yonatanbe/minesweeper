@@ -9,10 +9,9 @@
       this.cols = cols;
       this.minesCount = minesCount;
       this.board = createEmptyBoard(rows, cols);
+      this.totalCellsToRevealToWin = (rows * cols) - minesCount;
+      this.isGameOver = false;
     }
-
-    // Service logic
-    // ...
 
     function createEmptyBoard(rows, cols) {
       var board = [];
@@ -25,11 +24,15 @@
       return board;
     }
 
-    Game.prototype.getRandMineIndexes = function (size) {
+    Game.prototype.getRandMineIndexes = function () {
       var randArray = [],
           currRand,
-          maxRandNumber = this.rows * this.cols;
-      while (randArray.length < size) {
+          maxRandNumber = this.rows * this.cols,
+          totalNumOfMines = this.minesCount;
+      if (totalNumOfMines > maxRandNumber) {
+        throw 'Too many mines for this size of board!';
+      }
+      while (randArray.length < totalNumOfMines) {
         currRand = randGenerator.generateRand(maxRandNumber);
         if (randArray.indexOf(currRand) === -1) {
           randArray.push(currRand);
@@ -75,47 +78,52 @@
       }
       return cell.minesNeighborsCount;
     }
-//        var rowStart = Math.max(cellRow - 1, 0);
-//        var rowFinish = Math.min(cellRow + 1, game.rows - 1);
-//        var colStart = Math.max(cellCol - 1, 0);
-//        var colFinish = Math.min(cellCol + 1, game.cols - 1);
-//        for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
-//          for (var currCol = colStart; currCol <= colFinish; currCol++) {
-//            if (game.board[currRow][currCol].isAMine()) {
-//              cell.minesNeighborsCount++;
-//            }
-//          }
-//        }
+
+    function decCellsToRevealAndCheckForWin(that) {
+      that.totalCellsToRevealToWin--;
+      if (that.totalCellsToRevealToWin === 0) {
+        that.isGameOver = true;
+        alert('You WIN! :)');
+      }
+    }
+
+    function gameOverYouLose(that) {
+      revealAll(that.board);
+      that.isGameOver = true;
+      alert('Game Over - You LOST! :(');
+    }
 
     Game.prototype.reveal = function (row, col) {
       var cell = this.board[row][col];
       var totalCellsRevealed = 0;
 
-      if (!cell.isFlagged() && !cell.isRevealed()) {
-        cell.reveal();
-        var minesNeighborsCount = this.getMinesNeighborsCount(row, col);
-        totalCellsRevealed += (minesNeighborsCount !== 0) ?
-          1 : 1 + revealNeighbors(this, row, col);
+      if (!this.isGameOver && !cell.isFlagged() && !cell.isRevealed()) {
+        if (cell.isAMine()) {
+          gameOverYouLose(this);
+        } else {
+          cell.reveal();
+          decCellsToRevealAndCheckForWin(this);
+          var minesNeighborsCount = this.getMinesNeighborsCount(row, col);
+          totalCellsRevealed += (minesNeighborsCount !== 0) ?
+            1 : 1 + revealNeighbors(this, row, col);
+        }
       }
       return totalCellsRevealed;
     };
+
+    function revealAll(board) {
+      board.forEach(function (row) {
+        row.forEach(function (cell) {
+          cell.reveal();
+        });
+      });
+    }
 
     function revealNeighbors(game, cellRow, cellCol) {
       return mapEachNeighbor(game, cellRow, cellCol, function (game, row, col) {
         return game.reveal(row, col);
       });
     }
-//      var rowStart = Math.max(cellRow - 1, 0);
-//      var rowFinish = Math.min(cellRow + 1, game.rows - 1);
-//      var colStart = Math.max(cellCol - 1, 0);
-//      var colFinish = Math.min(cellCol + 1, game.cols - 1);
-//      for (var currRow = rowStart; currRow <= rowFinish; currRow++) {
-//        for (var currCol = colStart; currCol <= colFinish; currCol++) {
-//          if (!game.board[currRow][currCol].isRevealed()) {
-//            numberOfCellsRevealed += game.reveal(currRow, currCol);
-//          }
-//        }
-//      }
 
     function mapEachNeighbor(game, cellRow, cellCol, func) {
       var sum = 0;
@@ -131,8 +139,6 @@
       }
       return sum;
     }
-
-    // Public API here
 
     return Game;
   }

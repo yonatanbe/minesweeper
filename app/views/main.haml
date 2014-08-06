@@ -1,7 +1,5 @@
-.hero-unit{:"ng-controller" => "MainController as main"}
-  %h1 {{'general.YO' | translate}}
-  %p You now have
-  %ul
-    %li{:"ng-repeat" => "thing in main.awesomeThings"} {{thing}}
-  %p installed.
-  %h3 Enjoy coding! - Yeoman
+<div ng-init="name = 'danny'" right-click="name = 'moshe'">{{name}}</div>
+<div ng-controller = "GameController as gameCtrl">
+<div ng-include = "'views/game-header.html'"></div>
+<div ng-include = "'views/board.html'"></div>
+</div>

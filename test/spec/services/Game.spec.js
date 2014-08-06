@@ -57,7 +57,7 @@ describe('Service: Game', function () {
   it('should create a unique array of mine indexes of size minesCount', function () {
     var game = new Game(4, 2, 3);
     randNumbersArrayMock = [1, 1, 2, 3, 3, 4, 4, 4, 5, 6, 7, 8, 9, 10, 11];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     expect(minesIndexes.length).toBe(game.minesCount);
     var uniqueMinesIndexes = minesIndexes.filter(function (item, i, arr) {
       return arr.indexOf(item) === arr.lastIndexOf(item);
@@ -68,7 +68,7 @@ describe('Service: Game', function () {
   it('should plant n mines in the game\'s board', function () {
     var game = new Game(4, 2, 3);
     randNumbersArrayMock = [0, 0, 2, 2, 7, 5, 3];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     game = game.plantMines(minesIndexes);
     expect(game.numOfMines()).toBe(3);
   });
@@ -76,7 +76,7 @@ describe('Service: Game', function () {
   it('should calculate the number of mine neighbors for every cell in the game\'s board on demand', function () {
     var game = new Game(4, 4, 5);
     randNumbersArrayMock = [0, 3, 5, 6, 9];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     game = game.plantMines(minesIndexes);
     expect(game.getMinesNeighborsCount(0, 0)).toBe(-1);
     expect(game.getMinesNeighborsCount(0, 1)).toBe(3);
@@ -93,7 +93,7 @@ describe('Service: Game', function () {
   it('should be able to reveal a cell on the board and get back the number of cells that were revealed', function () {
     var game = new Game(4, 4, 5);
     randNumbersArrayMock = [0, 3, 5, 6, 9];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     game = game.plantMines(minesIndexes);
     var numberOfCellsRevealed = game.reveal(0, 1);
     expect(numberOfCellsRevealed).toBe(1);
@@ -103,7 +103,7 @@ describe('Service: Game', function () {
   it('should return 0 cells revealed when revealing an already revealed cell', function () {
     var game = new Game(4, 4, 5);
     randNumbersArrayMock = [0, 3, 5, 6, 9];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     game = game.plantMines(minesIndexes);
     game.reveal(0, 1);
     var numberOfCellsRevealed = game.reveal(0, 1);
@@ -113,7 +113,7 @@ describe('Service: Game', function () {
   it('should reveal all the neighbors of a revealed cell that has 0 mine neighbors and return the total amount of revealed cells', function () {
     var game = new Game(4, 4, 5);
     randNumbersArrayMock = [0, 3, 5, 6, 9];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     game = game.plantMines(minesIndexes);
     var numberOfCellsRevealed = game.reveal(3, 3);
     expect(numberOfCellsRevealed).toBe(4);
@@ -123,7 +123,7 @@ describe('Service: Game', function () {
   it('should reveal all the neighbors of a revealed cell that has 0 mine neighbors and return the total amount of revealed cells for a big board', function () {
     var game = new Game(7, 7, 3);
     randNumbersArrayMock = [9, 18, 33];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     game = game.plantMines(minesIndexes);
     var numberOfCellsRevealed = game.reveal(5, 1);
     expect(numberOfCellsRevealed).toBe(32);
@@ -132,7 +132,7 @@ describe('Service: Game', function () {
   it('should NOT reveal flagged cells', function () {
     var game = new Game(7, 7, 3);
     randNumbersArrayMock = [9, 18, 33];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     game = game.plantMines(minesIndexes);
     game.board[0][0].toggleFlag();
     game.board[5][3].toggleFlag();
@@ -143,7 +143,7 @@ describe('Service: Game', function () {
   it('should NOT reveal flagged cells and not "cross" flags wall', function () {
     var game = new Game(7, 7, 3);
     randNumbersArrayMock = [9, 18, 33];
-    var minesIndexes = game.getRandMineIndexes(game.minesCount);
+    var minesIndexes = game.getRandMineIndexes();
     game = game.plantMines(minesIndexes);
     game.board[5][5].toggleFlag();
     game.board[6][5].toggleFlag();

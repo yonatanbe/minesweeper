@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: MainController', function () {
+describe('Controller: GameController', function () {
 
   // load the controller's module
   beforeEach(function () {
@@ -9,17 +9,17 @@ describe('Controller: MainController', function () {
     //add your mocks here
   });
 
-  var MainController, scope;
+  var GameController, scope;
 
   // Initialize the controller and a mock scope
   beforeEach(inject(function ($controller, $rootScope) {
     scope = $rootScope.$new();
-    MainController = $controller('MainController', {
+    GameController = $controller('GameController', {
       $scope: scope
     });
   }));
 
-  it('should attach a list of awesomeThings to the controller', function () {
-    expect(MainController.awesomeThings.length).toBe(6);
-  });
+//  it('should attach a list of awesomeThings to the controller', function () {
+//    expect(GameController.awesomeThings.length).toBe(6);
+//  });
 });
