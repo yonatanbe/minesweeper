@@ -90,6 +90,7 @@
     Game.prototype.reveal = function (row, col) {
       var cell = this.board[row][col];
       var totalCellsRevealed = 0;
+
       if (!cell.isFlagged() && !cell.isRevealed()) {
         cell.reveal();
         var minesNeighborsCount = this.getMinesNeighborsCount(row, col);
@@ -100,11 +101,9 @@
     };
 
     function revealNeighbors(game, cellRow, cellCol) {
-      var numberOfCellsRevealed;
-      numberOfCellsRevealed = mapEachNeighbor(game, cellRow, cellCol, function (game, row, col) {
+      return mapEachNeighbor(game, cellRow, cellCol, function (game, row, col) {
         return game.reveal(row, col);
       });
-      return numberOfCellsRevealed;
     }
 //      var rowStart = Math.max(cellRow - 1, 0);
 //      var rowFinish = Math.min(cellRow + 1, game.rows - 1);
