@@ -17,6 +17,7 @@ describe('minesweeperApp Main Page', function () {
 
   it('should load successfully', function () {
     mainPage.navigate();
+
     expect(mainPage.getTitle().getText()).toEqual('Enjoy coding! - Yeoman');
   });
 

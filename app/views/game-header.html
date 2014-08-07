@@ -3,15 +3,15 @@
     <form name="gameForm"  ng-submit="gameCtrl.startNewGame()">
         <fieldset class="form-group">
             <label>Rows: </label>
-            <input ng-model="gameCtrl.newGame.rows" type="number" class="ms-form-control" title="Rows: " />
+            <input ng-model="gameCtrl.newGame.rows" type="number" class="ms-form-control" title="Rows:" placeholder="{{gameCtrl.game.rows}}" />
         </fieldset>
         <fieldset class="form-group">
             <label>Columns: </label>
-            <input ng-model="gameCtrl.newGame.cols" type="number" class="ms-form-control" title="Columns: " />
+            <input ng-model="gameCtrl.newGame.cols" type="number" class="ms-form-control" title="Columns:"  placeholder="{{gameCtrl.game.cols}}" />
         </fieldset>
         <fieldset class="form-group">
             <label>Number of Mines: </label>
-            <input ng-model="gameCtrl.newGame.minesCount" type="number" class="ms-form-control" title="Number of Mines: " />
+            <input ng-model="gameCtrl.newGame.minesCount" type="number" class="ms-form-control" title="Number of Mines:" placeholder="{{gameCtrl.game.minesCount}}" />
         </fieldset>
         <fieldset class="form-group">
             <input type="submit" class="ms-form-button" value="Start New Game" />

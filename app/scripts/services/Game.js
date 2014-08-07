@@ -10,7 +10,8 @@
       this.minesCount = minesCount;
       this.board = createEmptyBoard(rows, cols);
       this.totalCellsToRevealToWin = (rows * cols) - minesCount;
-      this.isGameOver = false;
+      this.isWin = false;
+      this.isLost = false;
     }
 
     function createEmptyBoard(rows, cols) {
@@ -62,7 +63,8 @@
 
     Game.prototype.getMinesNeighborsCount = function (cellRow, cellCol) {
       var cell = this.board[cellRow][cellCol];
-      return (cell.isAMine() || cell.minesNeighborsCount !== -1) ?
+      var isAlreadyCalculated = cell.minesNeighborsCount !== -1;
+      return (cell.isAMine() || isAlreadyCalculated) ?
         cell.minesNeighborsCount : calcMinesNeighbor(this, cellRow, cellCol);
     };
 
@@ -82,14 +84,14 @@
     function decCellsToRevealAndCheckForWin(that) {
       that.totalCellsToRevealToWin--;
       if (that.totalCellsToRevealToWin === 0) {
-        that.isGameOver = true;
+        that.isWin = true;
         alert('You WIN! :)');
       }
     }
 
     function gameOverYouLose(that) {
       revealAllMines(that.board);
-      that.isGameOver = true;
+      that.isLost = true;
       alert('Game Over - You LOST! :(');
     }
 
@@ -97,7 +99,7 @@
       var cell = this.board[row][col];
       var totalCellsRevealed = 0;
 
-      if (!this.isGameOver && !cell.isFlagged() && !cell.isRevealed()) {
+      if (!this.isGameOver() && !cell.isFlagged() && !cell.isRevealed()) {
         if (cell.isAMine()) {
           gameOverYouLose(this);
         } else {
@@ -141,6 +143,10 @@
       }
       return sum;
     }
+
+    Game.prototype.isGameOver = function () {
+      return this.isWin || this.isLost;
+    };
 
     return Game;
   }
