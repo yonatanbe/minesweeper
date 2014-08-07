@@ -18,8 +18,4 @@ describe('Controller: GameController', function () {
       $scope: scope
     });
   }));
-
-//  it('should attach a list of awesomeThings to the controller', function () {
-//    expect(GameController.awesomeThings.length).toBe(6);
-//  });
 });

@@ -88,7 +88,7 @@
     }
 
     function gameOverYouLose(that) {
-      revealAll(that.board);
+      revealAllMines(that.board);
       that.isGameOver = true;
       alert('Game Over - You LOST! :(');
     }
@@ -111,10 +111,12 @@
       return totalCellsRevealed;
     };
 
-    function revealAll(board) {
+    function revealAllMines(board) {
       board.forEach(function (row) {
         row.forEach(function (cell) {
-          cell.reveal();
+          if (cell.isAMine()) {
+            cell.reveal();
+          }
         });
       });
     }

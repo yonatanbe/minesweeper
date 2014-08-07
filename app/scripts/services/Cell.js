@@ -36,6 +36,10 @@
       return this.revealed;
     };
 
+    Cell.prototype.isNeedToShowNumberOnButton = function () {
+      return this.isRevealed() && this.minesNeighborsCount !== 0 && !this.isFlagged();
+    };
+
     return Cell;
   }
 

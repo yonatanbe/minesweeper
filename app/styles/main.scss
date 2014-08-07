@@ -5,7 +5,7 @@ $font-helvetica75: "HelveticaNeueW01-75Bold", "HelveticaNeueW02-75Bold", "Helvet
 
 .container {
   margin: auto;
-  width: 300px;
+  width: 100%;
 }
 
 .hero-unit {
@@ -33,6 +33,72 @@ button {
   margin: 2px;
 }
 
+button:focus {
+  outline:0;
+}
+
 button.flagged {
-  background-color: red;
+  background-image: url('../images/flag_icon.jpeg');
+  background-size: 100%;
+}
+
+button.show_mine {
+  background-image: url('../images/mine.jpeg');
+  background-size: 100%;
+}
+
+div.show_number {
+  color: black;
+}
+
+div.hide_number {
+  color: transparent;
+}
+
+html {
+  background: url('../images/bg_mage.jpeg') no-repeat center center fixed;
+  background-size: cover;
+}
+
+fieldset.form-group {
+  display: inline-block;
+}
+
+div.ms-board-container {
+  margin-top: 30px;
+}
+
+div.ms-form-wrapper {
+  background-color: rgba(245, 241, 218, 0.5);
+  border: 2px solid #1d9fb0;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.form-group {
+  border: none;
+}
+
+.ms-container {
+  text-align: center;
+}
+
+fieldset label {
+  font-family: "Helvetica Neue Light", "HelveticaNeue-Light", "Helvetica Neue", Calibri, Helvetica, Arial;
+  font-size: 24px;
+}
+
+input.ms-form-button {
+  width: 4em;
+  font-size: 2em;
+}
+
+input.ms-form-control {
+  text-align: center;
+}
+
+h1 {
+  font-family: fantasy;
+  color: rgba(189, 255, 89, 0.82);
+  text-shadow: 2px 2px rgba(0, 0, 0, 0.5);
 }

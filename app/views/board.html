@@ -1,5 +1,7 @@
-<div ng-repeat="row in gameCtrl.game.board">
-    <button ng-repeat="cell in row" ng-click = "gameCtrl.game.reveal($parent.$index, $index)" ng-disabled = "gameCtrl.game.board[$parent.$index][$index].isRevealed()" right-click="gameCtrl.game.board[$parent.$index][$index].toggleFlag()" ng-class="{flagged: gameCtrl.game.board[$parent.$index][$index].isFlagged()}">
-        <div ng-show="cell.isRevealed() && cell.minesNeighborsCount !== 0">{{cell.minesNeighborsCount}}</div>
-    </button>
+<div class="ms-board-container">
+    <div ng-repeat="row in gameCtrl.game.board">
+        <button class="ms-cell-button" ng-repeat="cell in row" ng-click = "gameCtrl.game.reveal($parent.$index, $index)" ng-disabled = "gameCtrl.game.board[$parent.$index][$index].isRevealed()" right-click="gameCtrl.game.board[$parent.$index][$index].toggleFlag()" ng-class="{flagged: gameCtrl.game.board[$parent.$index][$index].isFlagged(), show_mine: gameCtrl.game.board[$parent.$index][$index].isAMine() && gameCtrl.game.board[$parent.$index][$index].isRevealed()}">
+            <div ng-class="{show_number: cell.isNeedToShowNumberOnButton(), hide_number: !cell.isNeedToShowNumberOnButton()}">{{cell.minesNeighborsCount}}</div>
+        </button>
+    </div>
 </div>
